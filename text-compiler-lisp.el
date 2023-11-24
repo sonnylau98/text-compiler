@@ -33,3 +33,23 @@
    )
   )
 
+(defun text-compiler-lisp--make-token-type ()
+  "Make up the token type."
+  (append text-compiler-lisp--token-type
+          text-compiler-lisp--comment-token-type
+          text-compiler-lex--token-type))
+
+(defun text-compiler-lisp (path)
+  "Parse the PATH Lisp."
+  (let* (
+	 (text-compiler-lex--token-type (text-compiler-lisp--make-token-type))
+	 (token-list (text-compiler-lex-tokenize-it path))
+	 )
+    (text-compiler-ast-build token-list
+			     text-compiler-lisp--into-level-symbols
+			     text-compiler-lisp--back-level-symbols
+			     )
+    )
+  )
+
+(provide 'text-compiler-lisp)
